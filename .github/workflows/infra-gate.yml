@@ -1,0 +1,36 @@
+# Gate de INFRA: verifica el empaquetado Docker donde SÍ hay Docker (GitHub Actions),
+# que es justo lo que el agente de Codex cloud no puede correr (docker-in-docker).
+# El gate de código (code) corre donde trabaje el agente; este complementa.
+name: infra-gate
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage a verificar (NN)"
+        required: true
+        default: "00"
+
+jobs:
+  infra-gate:
+    runs-on: ubuntu-latest   # incluye Docker + docker compose
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Guards de código baratos
+        run: |
+          npm run -s lint
+          npm run -s typecheck
+          npm run -s build
+      - name: Gate de infra (validación compose + smoke docker)
+        env:
+          STAGE: ${{ github.event.inputs.stage || '00' }}
+        run: |
+          chmod +x gate.sh
+          GATE_PROFILE=infra ./gate.sh "$STAGE"

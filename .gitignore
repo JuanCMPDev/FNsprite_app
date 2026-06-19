@@ -1,0 +1,14 @@
+spiritmatch-harness.tar.gz
+
+# Internal planning/docs. Keep these local; do not publish them to the public repo.
+AGENTS.internal.md
+.claude/
+CLAUDE.md
+CODEX-CLOUD-SETUP.md
+GUIA-PASO-A-PASO.md
+INDEX.md
+README-harness.md
+RUNBOOK-CODEX.md
+blueprint-*.md
+guia-*.md
+tasks/
