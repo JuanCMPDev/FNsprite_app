@@ -97,7 +97,7 @@ run_codex() {
   local -a cmd=( codex -a never exec --sandbox workspace-write --json )
   [[ -n "$MODEL" ]] && cmd+=( --model "$MODEL" )
   cmd+=( "$prompt" )
-  timeout "$CALL_TIMEOUT" "${cmd[@]}" 2>&1 | tee -a "$LOG_FILE"
+  timeout "$CALL_TIMEOUT" "${cmd[@]}" </dev/null 2>&1 | tee -a "$LOG_FILE"
   return "${PIPESTATUS[0]}"
 }
 
