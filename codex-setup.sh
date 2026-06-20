@@ -36,12 +36,21 @@ SQL
 $SUDO -u postgres createdb -O spiritmatch spiritmatch 2>/dev/null || echo "(la base ya existe)"
 
 echo "==> Dependencias del proyecto"
-if [ -f package-lock.json ]; then npm ci; else npm install; fi
+if [ -f package-lock.json ]; then
+  npm ci
+elif [ -f package.json ]; then
+  npm install
+else
+  echo "(package.json aun no existe; Stage 00 lo creara)"
+fi
 
-echo "==> Pre-instalando deps que el blueprint ya anticipa (evita que el agente"
-echo "    necesite red en stages tardías: redis -> 07, discord.js -> 08)"
-npm install --save next react react-dom @prisma/client zod next-auth ioredis discord.js || true
-npm install --save-dev prisma vitest @playwright/test @types/node eslint prettier typescript || true
+if [ -f package.json ]; then
+  echo "==> Pre-instalando deps anticipadas"
+  npm install --save next react react-dom @prisma/client zod next-auth ioredis discord.js || true
+  npm install --save-dev prisma vitest @playwright/test @types/node eslint prettier typescript || true
+else
+  echo "==> Sin package.json: habilita internet del agente para Stage 00"
+fi
 
 echo "==> Prisma generate + migrate (si ya existe schema)"
 if [ -f prisma/schema.prisma ]; then
