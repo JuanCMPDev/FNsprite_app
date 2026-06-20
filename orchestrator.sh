@@ -94,7 +94,7 @@ run_claude() {
 
 run_codex() {
   local prompt="$1"
-  local -a cmd=( codex exec --sandbox workspace-write -c 'approval_policy="never"' --json )
+  local -a cmd=( codex -a never exec --sandbox workspace-write --json )
   [[ -n "$MODEL" ]] && cmd+=( --model "$MODEL" )
   cmd+=( "$prompt" )
   timeout "$CALL_TIMEOUT" "${cmd[@]}" 2>&1 | tee -a "$LOG_FILE"
