@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { readHealth } from "@/src/server/health";
+import { readHealth } from "../../../src/server/health";
 
 export const dynamic = "force-dynamic";
 

@@ -1,4 +1,4 @@
-import { prisma } from "@/src/server/db";
+import { prisma } from "./db";
 
 type DatabaseProbe = Pick<typeof prisma, "$queryRaw">;
 
