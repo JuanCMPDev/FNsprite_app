@@ -3,6 +3,7 @@ spiritmatch-harness.tar.gz
 .next/
 logs/
 node_modules/
+test-results/
 tsconfig.tsbuildinfo
 
 # Internal planning/docs. Keep these local; do not publish them to the public repo.
