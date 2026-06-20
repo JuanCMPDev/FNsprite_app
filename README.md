@@ -7,10 +7,54 @@ the implementation stabilizes.
 
 ## Development
 
-The project uses automated gates for code and infrastructure checks.
+Install dependencies:
+
+```bash
+npm install
+```
+
+Set local environment values:
+
+```bash
+cp .env.example .env
+```
+
+Run code checks:
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
+
+## Docker
+
+Run the local stack:
+
+```bash
+docker compose up -d
+```
+
+The app is available at `http://localhost:3000`. Health checks are exposed at:
+
+```bash
+curl http://localhost:3000/api/health
+```
+
+Stop the stack:
+
+```bash
+docker compose down -v
+```
+
+## Gates
+
+The project uses automated gates for code and infrastructure checks:
 
 ```bash
 ./gate.sh 00 code
+./gate.sh 00 infra
 ```
 
 Infrastructure checks require Docker and should be run only in an environment prepared

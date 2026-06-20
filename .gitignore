@@ -1,6 +1,9 @@
 spiritmatch-harness.tar.gz
 .local-bin/
+.next/
 logs/
+node_modules/
+tsconfig.tsbuildinfo
 
 # Internal planning/docs. Keep these local; do not publish them to the public repo.
 AGENTS.internal.md

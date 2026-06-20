@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: spiritmatch
+      POSTGRES_PASSWORD: spiritmatch
+      POSTGRES_USER: spiritmatch
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spiritmatch -d spiritmatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://spiritmatch:spiritmatch@db:5432/spiritmatch?schema=public
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: production
+    expose:
+      - "3000"
+
+  proxy:
+    image: caddy:2-alpine
+    depends_on:
+      - web
+    ports:
+      - "3000:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  caddy-config:
+  caddy-data:
+  db-data:
